@@ -5,7 +5,7 @@ request('https://www.baseball-reference.com/leagues/MLB/2019.shtml', (error, res
     if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
 
-        const divs = $('*');
+        const divs = $('.section_heading');
         const divString = divs.html();
         let isOnFirstDiv = false;
         let firstIndex = 0;
@@ -24,8 +24,10 @@ request('https://www.baseball-reference.com/leagues/MLB/2019.shtml', (error, res
         }
 
         for (let x = 0; x < foundDivs.length; x++) {
-            const subString = foundDivs[x].substring(0, 8);
-            if (subString === 'div id="') {
+            const subString = foundDivs[x].substring(0, 3);
+            console.log(subString);
+
+            if (subString === 'td c') {
                 console.log('yeeeeeeee' + foundDivs[x]);
             }
 
@@ -42,5 +44,5 @@ function isDiv(divString, index) {
         return true;
     }
 
-    return false;
+    return true;
 }
