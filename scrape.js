@@ -5,9 +5,31 @@ request('https://www.baseball-reference.com/leagues/MLB/2019.shtml', (error, res
     if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
 
-        $('.section_heading').each((index, element) => {
+        let teamBattingTable = {};
+
+        $('.table_outer_container').each((index, element) => {
             const $element = $(element);
-            console.log($element.text());
+            const tableString = $element.text();
+
+            $element.find('tr').each((i, tr) => {
+                const $tr = $(tr);
+
+                const teamname = '';
+
+                $tr.find('th a').each((j, th) => {
+                    const $th = $(th);
+                    teamName = $th.html();
+                    teamBattingTable[teamName] = {};
+                });
+
+                $tr.find('td').each((j, td) => {
+                    const $td = $(td);
+
+                    teamBattingTable[teamName][$td.attr('data-stat')] = $td.html();
+                });
+            })
         });
+
+        console.log(teamBattingTable);
     }
 });
